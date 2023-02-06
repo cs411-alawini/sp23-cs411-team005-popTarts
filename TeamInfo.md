@@ -29,10 +29,6 @@ Project Summary - The project aims to create an e-commerce website that speciali
 1. Inventory Management:
     The website will keep track of inventory levels of the games. It will automatically update the availability of games based on the stock levels. The inventory management system will also be used to keep track of sales and generate reports on the performance of different products.
 2. Features:
-User-friendly interface for browsing and purchasing Steam games.
-Real-time inventory management system.
-Option for customers to add games to their wishlist and receive notifications when they become available.
-3. Target Audience:
-a. The website will target Steam gamers who are interested in purchasing games. It will provide a convenient and accessible platform for customers to research and purchase their favorite games. 
-b. The open-source aspect of our project will target small businesses and aim to provide them with an opportunity to set up an e-commerce website for their own products. 
+User-friendly interface for browsing and purchasing Steam games, real-time inventory management system, option for customers to add games to their wishlist, ability to search for and filter game listings, and administrative settings for owners to customize the database. 
+3. Target Audience: The website will target Steam gamers who are interested in purchasing games. It will provide a convenient and accessible platform for customers to research and purchase their favorite games. The open-source aspect of our project will target small businesses and aim to provide them with an opportunity to set up an e-commerce website for their own products. 
 
