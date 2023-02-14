@@ -19,7 +19,7 @@
 
 |   Info      |        Description     |
 | ----------- | ---------------------- |
-|  Title      |       ProjectTitle     |
+|  Title      |      E-commerce and Inventory Management Application - Gamestock|
 | System URL  |      link_to_system    |
 | Video Link  |      link_to_video     |
 
