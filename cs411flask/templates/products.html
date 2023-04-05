@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Products</title>
+</head>
+<style>
+    .threegames {display: flex;
+                flex-direction: row;}
+    .game {margin: 10px;}
+</style>
+<body>
+    <h1>Products</h1>
+    <ul>
+        {% for product in range(100) %}
+        <div class="threegames" >
+            <div class="game">
+                <img src="{{products[3*product].imageLink}}">
+                <div class="game-name">{{products[3*product].name}}</div>
+                <div class="game-price">[price from SQL]</div>
+                <div class="game-rating">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star-half-alt"></i>
+                    <span>[rating from SQL]</span>
+                </div>
+                <div class="game-buttons">
+                    <a href="#">View Details</a>
+                    <a href="#">Add to cart</a>
+                </div>
+            </div>
+            <div class="game">
+                <img src="{{products[3*product + 1].imageLink}}">
+                <div class="game-name">{{products[3*product + 1].name}}</div>
+                <div class="game-price">[price from SQL]</div>
+                <div class="game-rating">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star-half-alt"></i>
+                    <span>[rating from SQL]</span>
+                </div>
+                <div class="game-buttons">
+                    <a href="#">View Details</a>
+                    <a href="#">Add to cart</a>
+                </div>
+            </div>
+            <div class="game">
+                <img src="{{products[3*product + 2].imageLink}}">
+                <div class="game-name">{{products[3*product + 2].name}}</div>
+                <div class="game-price">[price from SQL]</div>
+                <div class="game-rating">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star-half-alt"></i>
+                    <span>[rating from SQL]</span>
+                </div>
+                <div class="game-buttons">
+                    <a href="#">View Details</a>
+                    <a href="#">Add to cart</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </ul>
+</body>
+</html>
