@@ -7,223 +7,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
         integrity="sha512-AJgq3OXhL9fVplnLKJyLOjE/mYyoFy34x1MckrcMNFBL/LmeLQLom9ThASBythMbDDU5hQsz72w6UeR6JxMN6g=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" type="text/css" href="single_product.css">
-    <style>
-        .body {
-    margin: 0;
-    padding: 0;
-    font-family: Arial, sans-serif;
-    }
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/single_product.css') }}">
 
-        .container {
-            width: 80%;
-            margin: 0 auto;
-        }
-
-        .header {
-            background-color: #1b2838;
-            color: #fff;
-            padding: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .logo {
-            font-size: 24px;
-            font-weight: bold;
-        }
-
-        .search-box {
-            display: flex;
-            align-items: center;
-            background-color: #fff;
-            border-radius: 5px;
-            padding: 5px 10px;
-            width: 400px;
-            margin-right: 20px;
-        }
-
-        .search-box input[type="text"] {
-            border: none;
-            flex: 1;
-            margin-left: 10px;
-            font-size: 16px;
-            outline: none;
-        }
-
-        .search-box button {
-            background-color: #1b2838;
-            color: #fff;
-            border: none;
-            border-radius: 3px;
-            padding: 5px 10px;
-            font-size: 16px;
-            cursor: pointer;
-        }
-
-        .navigation {
-            background-color: #2f3e4f;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 10px 20px;
-            margin-top: 20px;
-            border-radius: 5px;
-        }
-
-        .navigation a {
-            color: #fff;
-            text-decoration: none;
-            font-size: 16px;
-            margin: 0 10px;
-        }
-
-        .navigation a:hover {
-            text-decoration: underline;
-        }
-
-        .game-details {
-            display: flex;
-            margin-top: 20px;
-        }
-
-        .game-image {
-            flex: 1;
-        }
-
-        .game-image img {
-            width: 100%;
-            border-radius: 5px;
-            box-shadow: 0px 0px 5px #999;
-        }
-
-        .game-info {
-            flex: 1;
-            margin-left: 20px;
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0px 0px 5px #999;
-        }
-
-        .game-name {
-            font-size: 28px;
-            font-weight: bold;
-            margin-bottom: 20px;
-        }
-
-        .game-price {
-            font-size: 28px;
-            font-weight: bold;
-            color: #e74c3c;
-            margin-bottom: 20px;
-        }
-
-        .game-discount {
-            font-size: 18px;
-            font-weight: bold;
-            color: #e74c3c;
-            margin-bottom: 20px;
-        }
-
-        .game-discount span {
-            text-decoration: line-through;
-            color: #999;
-            margin-right: 10px;
-            font-size: 16px;
-        }
-
-        .game-rating {
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-        }
-
-        .game-rating i {
-            font-size: 24px;
-            color: #f1c40f;
-            margin-right: 10px;
-        }
-
-        .game-rating span {
-            font-size: 18px;
-            color: #999;
-            margin-right: 20px;
-        }
-
-        .game-description {
-            font-size: 16px;
-            line-height: 1.5;
-            margin-bottom: 20px;
-        }
-
-        .game-system-requirements {
-            font-size: 16px;
-            line-height: 1.5;
-        }
-
-        .game-system-requirements h3 {
-            font-size: 20px;
-            font-weight: bold;
-            margin-top: 20px;
-            margin-bottom: 10px;
-        }
-
-        .game-system-requirements ul {
-            margin: 0;
-            padding: 0;
-            list-style: none;
-            margin-bottom: 20px;
-        }
-
-        .game-system-requirements li {
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            font-size: 16px;
-            color: #999;
-        }
-
-        .game-system-requirements li i {
-            margin-right: 10px;
-            color: #1b2838;
-            font-size: 24px;
-        }
-
-        .game-buttons {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-top: 20px;
-        }
-
-        .game-buttons a {
-            background-color: #1b2838;
-            color: #fff;
-            border: none;
-            border-radius: 3px;
-            padding: 10px 20px;
-            font-size: 16px;
-            cursor: pointer;
-            text-decoration: none;
-            margin-right: 5px;
-            width: 50%;
-            text-align: center;
-        }
-
-        .game-buttons a:hover {
-            background-color: #0e1621;
-        }
-
-        .game-buttons a:last-child {
-            background-color: #e74c3c;
-        }
-
-        .game-buttons a:last-child:hover {
-            background-color: #c0392b;
-        }
-    </style>
 </head>
 
 <body>
@@ -247,29 +32,17 @@
                 <img src="013.jpeg">
             </div>
             <div class="game-info">
-                <div class="game-name">Game Name 1</div>
-                <div class="game-price">$39.99</div>
-                <div class="game-rating">
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="far fa-star"></i>
-                    <span>4.0</span>
-                </div>
-                <div class="game-description">
-                    This is the game description. What type of game it is, how players can operate it, and what its
-                    features and highlights are, etc. Here you can briefly introduce the main content and features of
-                    the game.
-                </div>
+                <div class="game-name">{{ game_info.name }}</div>
+                <div class="game-price">{{ game_info.price }}</div>
+                <!-- ... -->
+                <div class="game-description">{{ game_info.description }}</div>
+                <!-- ... -->
                 <div class="game-system-requirements">
                     <h3>System requirements</h3>
                     <ul>
-                        <li><i class="fas fa-desktop"></i>Windows 10</li>
-                        <li><i class="fas fa-microchip"></i>Intel Core i5-4460</li>
-                        <li><i class="fas fa-memory"></i>8 GB RAM</li>
-                        <li><i class="fas fa-database"></i>30 GB available space</li>
-                        <li><i class="fas fa-video"></i>NVIDIA GeForce GTX 760</li>
+                        {% for requirement in game_info.requirements %}
+                        <li><i class="{{ requirement.icon }}"></i>{{ requirement.text }}</li>
+                        {% endfor %}
                     </ul>
                 </div>
                 <div class="game-buttons">
