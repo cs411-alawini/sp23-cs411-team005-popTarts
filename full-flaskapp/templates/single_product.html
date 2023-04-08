@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Steam single product</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+        integrity="sha512-AJgq3OXhL9fVplnLKJyLOjE/mYyoFy34x1MckrcMNFBL/LmeLQLom9ThASBythMbDDU5hQsz72w6UeR6JxMN6g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='single_product.css') }}">
+
+</head>
+
+<body>
+    <div class="header">
+        <div class="logo">Steam</div>
+        <div class="search-box">
+            <input type="text" placeholder="Search games">
+            <button><i class="fas fa-search"></i></button>
+        </div>
+    </div>
+    <div class="container">
+        <div class="navigation">
+            <a href="#">Home</a>
+            <a href="#">Deals</a>
+            <a href="#">New releases</a>
+            <a href="#">Popular</a>
+            <a href="#">My games</a>
+        </div>
+        <div class="game-details">
+            <div class="game-image">
+                <img src="013.jpeg">
+            </div>
+            <div class="game-info">
+                <div class="game-name">{{ game_info.name }}</div>
+                <div class="game-price">{{ game_info.price }}</div>
+                <!-- ... -->
+                <div class="game-description">{{ game_info.description }}</div>
+                <!-- ... -->
+                <div class="game-system-requirements">
+                    <h3>System requirements</h3>
+                    <ul>
+                        {% for requirement in game_info.requirements %}
+                        <li><i class="{{ requirement.icon }}"></i>{{ requirement.text }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="game-buttons">
+                    <a href="#">Buy now</a>
+                    <a href="#">Add to cart</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
