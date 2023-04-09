@@ -11,7 +11,7 @@
 <body>
     <h1>Products</h1>
     <ul>
-        {% for products_chunk in products|batch(3) %}
+        {% for products_chunk in products|batch(2) %}
         <div class="product-row" >
             {% for product in products_chunk %}
             <div class="product">
@@ -27,7 +27,8 @@
                     <span>[rating from SQL]</span>
                 </div>
                 <div class="game-buttons">
-                    <a href="#">View Details</a>
+                <div class="game-name">{{product.name}}</div>
+                    <a href="/product?id={{product.id}}">View Details</a>
                     <a href="#">Add to cart</a>
                 </div>
             </div>

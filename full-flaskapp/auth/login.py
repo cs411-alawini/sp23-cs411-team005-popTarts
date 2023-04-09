@@ -19,12 +19,12 @@ def login():
         if user is not None:
             if password == user[1]:
                 session['user_id'] = user[2]
-                session['username'] = user[1]
+                session['username'] = user[0]
                 return redirect(url_for('home.home'))
             else:
-                flash('Invalid email or password 1', 'error')
+                flash('Invalid email or password', 'error')
         else:
-            flash('Invalid email or password 2', 'error')
+            flash('Invalid email or password', 'error')
         return render_template('login.html')
     else:
         return render_template('login.html')

@@ -1,5 +1,4 @@
 from flask import Blueprint, render_template
-import pandas as pd
 import csv 
 #import mysql.connector as sql
 
@@ -11,4 +10,4 @@ def products():
         a = [{k: v for k, v in row.items()}
             for row in csv.DictReader(f, skipinitialspace=True)]
     products = a
-    return render_template('products.html', products=products)
+    return render_template('products.html', products=products[:100])
