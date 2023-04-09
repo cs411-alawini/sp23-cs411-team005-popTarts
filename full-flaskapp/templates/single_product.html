@@ -34,8 +34,8 @@
             <div class="game-info">
                 <div class="game-name">{{ game_info.name }}</div>
                 <div class="game-price">
-                    <span class="original-price" style="text-decoration: line-through;">{{ price_info.price }}</span>
-                    <span class="discounted-price">{{ (price_info.price * (1 - price_info.discount / 100)) | round(2) }}<br></span>
+                    <span class="original-price" style="text-decoration: line-through;">${{ price_info.price }}</span>
+                    <span class="discounted-price">${{ (price_info.price * (1 - price_info.discount / 100)) | round(2) }}<br></span>
                     <span class="discount">{{ price_info.discount }}% off</span>
 
                 </div>
