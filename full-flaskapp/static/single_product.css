@@ -118,6 +118,13 @@ body {
     color: #e74c3c;
     margin-bottom: 20px;
 }
+.original-price{
+    font-size: 22px;
+    font-weight: bold;
+    color: #e74c3c;
+    margin-bottom: 20px;
+}
+
 .discount{
     font-size: 20px;
     font-weight: bold;
