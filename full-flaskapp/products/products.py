@@ -9,8 +9,9 @@ def translate_game_info(info):
     game_info = {
         'id': info[0],
         'name': info[1],
-        'imageLink':info[6],
-        'price': info[9]
+        'imageLink':info[2],
+        'price': info[3],
+        'rating': info[4]
     }
     return game_info
 
@@ -42,7 +43,7 @@ def products():
     cur = mysql.connection.cursor()
     cur.execute("SELECT COUNT(*) FROM Products")
     total_products = cur.fetchone()[0]
-    cur.execute("SELECT * FROM Products NATURAL JOIN Inventory LIMIT %s,%s", (start_index, products_per_page))
+    cur.execute("SELECT p.productId, p.name, p.imageLink, i.price, AVG(r.rating) FROM Products p NATURAL JOIN Inventory i NATURAL JOIN Reviews r GROUP BY p.productId ORDER BY p.productId LIMIT %s,%s", (start_index, products_per_page))
     products = cur.fetchall()
     current_app.logger.info(products)
     products = list(map(translate_game_info,products))
