@@ -1,13 +1,30 @@
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template,request,current_app
 import csv 
 from db import mysql
 
 products_bp = Blueprint('products', __name__)
 
+def translate_game_info(info):
+    game_info = {
+        'id': info[0],
+        'name': info[1],
+        'imageLink':info[6],
+    }
+    return game_info
+
 @products_bp.route('/products')
 def products():
-    with open('products/products.csv') as f:
-        a = [{k: v for k, v in row.items()}
-            for row in csv.DictReader(f, skipinitialspace=True)]
-    products = a
-    return render_template('products.html', products=products[:100])
+
+    page = request.args.get('page', default=1, type=int)
+    products_per_page = request.args.get('products_per_page', default=20, type=int)
+    start_index = (page - 1) * products_per_page
+    end_index = start_index + products_per_page
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT COUNT(*) FROM Products")
+    total_products = cur.fetchone()[0]
+    cur.execute("SELECT * FROM Products LIMIT %s,%s", (start_index, products_per_page))
+    products = cur.fetchall()
+    current_app.logger.info(products)
+    products = list(map(translate_game_info,products))
+    return render_template('products.html',  products=products, total_products=total_products, 
+                           products_per_page=products_per_page, current_page=page)
