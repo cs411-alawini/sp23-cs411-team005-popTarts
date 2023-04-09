@@ -5,28 +5,28 @@ from db import mysql
 product_bp = Blueprint('product', __name__, url_prefix='/product')
 
 
-def get_game_info():
-    # 假设这是从数据库中获取游戏信息的函数，根据 game_id 返回游戏信息
+def get_game_info(info):
     game_info = {
-        'id': 1.0,
-        'name': 'Game Name 1',
-        'price': '$39.99',
-        'rating': 4.0,
-        'description': 'This is the game description...',
-        'requirements': [
-            {'icon': 'fas fa-desktop', 'text': 'Windows 10'},
-            {'icon': 'fas fa-microchip', 'text': 'Intel Core i5-4460'},
-            {'icon': 'fas fa-memory', 'text': '8 GB RAM'},
-            {'icon': 'fas fa-database', 'text': '30 GB available space'},
-            {'icon': 'fas fa-video', 'text': 'NVIDIA GeForce GTX 760'},
-        ]
+        'id': info[0],
+        'name': info[1],
+        'requiredAge': info[3],
+        'rating': info[2],
+        'pcRequirements':info[4],
+        'description': info[5],
+        'release date':info[7],
+        'imageLink':info[6],
     }
     return game_info
 
 
 @product_bp.route('/')
 def index():
-    game_info = get_game_info()
+    id = request.args.get('id')
+    current_app.logger.info(id)
+    cur = mysql.connection.cursor()
+    cur.execute('SELECT * FROM Products WHERE productId = %s', [id])
+    info = cur.fetchone()
+    game_info = get_game_info(info)
     return render_template('single_product.html', game_info=game_info)
 
 
