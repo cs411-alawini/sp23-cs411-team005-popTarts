@@ -29,5 +29,3 @@ def index():
     game_info = get_game_info(info)
     return render_template('single_product.html', game_info=game_info)
 
-
-

@@ -10,6 +10,13 @@
 </style>
 <body>
     <h1>Products</h1>
+    <form action="/products" method="POST">
+        <input name="search">
+        <input type="submit">
+    </form>
+    <input type="button" name="next" value="next" />
+    <input type="button" name="last" value="last" />
+
     <ul>
         {% for products_chunk in products|batch(2) %}
         <div class="product-row" >
@@ -17,7 +24,7 @@
             <div class="product">
                 <img src="{{product.imageLink}}">
                 <div class="game-name">{{product.name}}</div>
-                <div class="game-price">[price from SQL]</div>
+                <div class="game-price">{{product.price}}</div>
                 <div class="game-rating">
                     <i class="fas fa-star"></i>
                     <i class="fas fa-star"></i>
@@ -27,7 +34,6 @@
                     <span>[rating from SQL]</span>
                 </div>
                 <div class="game-buttons">
-                <div class="game-name">{{product.name}}</div>
                     <a href="/product?id={{product.id}}">View Details</a>
                     <a href="#">Add to cart</a>
                 </div>
