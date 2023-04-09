@@ -1,7 +1,8 @@
-.body {
+body {
     margin: 0;
     padding: 0;
     font-family: Arial, sans-serif;
+    background-color: #171a21;
 }
 
 .container {
@@ -26,7 +27,7 @@
 .search-box {
     display: flex;
     align-items: center;
-    background-color: #fff;
+    background-color: #2a475e;
     border-radius: 5px;
     padding: 5px 10px;
     width: 400px;
@@ -39,6 +40,8 @@
     margin-left: 10px;
     font-size: 16px;
     outline: none;
+    background-color: #2a475e;
+    color: #fff;
 }
 
 .search-box button {
@@ -52,7 +55,7 @@
 }
 
 .navigation {
-    background-color: #2f3e4f;
+    background-color: #2c3e50;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -62,7 +65,7 @@
 }
 
 .navigation a {
-    color: #fff;
+    color: #bbb;
     text-decoration: none;
     font-size: 16px;
     margin: 0 10px;
@@ -75,10 +78,16 @@
 .game-details {
     display: flex;
     margin-top: 20px;
+    background-color: #2a475e;
+    padding: 20px;
+    border-radius: 5px;
 }
 
 .game-image {
     flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .game-image img {
@@ -90,16 +99,17 @@
 .game-info {
     flex: 1;
     margin-left: 20px;
-    background-color: #fff;
+    background-color: #2a475e;
     padding: 20px;
     border-radius: 5px;
     box-shadow: 0px 0px 5px #999;
 }
 
 .game-name {
-    font-size: 28px;
+    font-size: 2.5rem;
     font-weight: bold;
-    margin-bottom: 20px;
+    color: #66c0f4;
+    margin-bottom: 1rem;
 }
 
 .game-price {
@@ -107,6 +117,25 @@
     font-weight: bold;
     color: #e74c3c;
     margin-bottom: 20px;
+}
+.original-price{
+    font-size: 22px;
+    font-weight: bold;
+    color: #e74c3c;
+    margin-bottom: 20px;
+}
+
+.discount{
+    font-size: 20px;
+    font-weight: bold;
+    color: #e74c3c;
+    margin-bottom: 20px;
+}
+.game-requiredAge {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #0e0e0e;
+    margin-bottom: 1rem;
 }
 
 .game-discount {
@@ -127,88 +156,56 @@
     margin-bottom: 20px;
     display: flex;
     align-items: center;
-}
-
-.game-rating i {
-    font-size: 24px;
-    color: #f1c40f;
-    margin-right: 10px;
-}
-
-.game-rating span {
-    font-size: 18px;
-    color: #999;
-    margin-right: 20px;
-}
-
-.game-description {
-    font-size: 16px;
-    line-height: 1.5;
-    margin-bottom: 20px;
-}
-
-.game-system-requirements {
-    font-size: 16px;
-    line-height: 1.5;
-}
-
-.game-system-requirements h3 {
-    font-size: 20px;
-    font-weight: bold;
-    margin-top: 20px;
-    margin-bottom: 10px;
-}
-
-.game-system-requirements ul {
-    margin: 0;
-    padding: 0;
-    list-style: none;
-    margin-bottom: 20px;
-}
-
-.game-system-requirements li {
-    margin-bottom: 10px;
-    display: flex;
-    align-items: center;
-    font-size: 16px;
-    color: #999;
-}
-
-.game-system-requirements li i {
-    margin-right: 10px;
-    color: #1b2838;
-    font-size: 24px;
-}
-
-.game-buttons {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-top: 20px;
-}
-
-.game-buttons a {
-    background-color: #1b2838;
-    color: #fff;
-    border: none;
-    border-radius: 3px;
-    padding: 10px 20px;
-    font-size: 16px;
-    cursor: pointer;
-    text-decoration: none;
-    margin-right: 5px;
-    width: 50%;
-    text-align: center;
-}
-
-.game-buttons a:hover {
-    background-color: #0e1621;
-}
-
-.game-buttons a:last-child {
-    background-color: #e74c3c;
-}
-
-.game-buttons a:last-child:hover {
-    background-color: #c0392b;
-}
+    }
+    
+    .game-rating i {
+        font-size: 24px;
+        color: #f1c40f;
+        margin-right: 10px;
+    }
+    
+    .game-rating span {
+        font-size: 18px;
+        color: #999;
+        margin-right: 20px;
+    }
+    
+    .game-description {
+        font-size: 1.1rem;
+        font-weight: 500;
+        line-height: 1.8;
+        color: #d6d7d8;
+        margin-bottom: 1rem;
+    }
+    .game-buttons {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: 20px;
+    }
+    
+    .game-buttons a {
+        background-color: #1b2838;
+        color: #fff;
+        border: none;
+        border-radius: 3px;
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+        text-decoration: none;
+        margin-right: 5px;
+        width: 48%;
+        text-align: center;
+    }
+    
+    .game-buttons a:hover {
+        background-color: #0e1621;
+    }
+    
+    .game-buttons a:last-child {
+        background-color: #e74c3c;
+    }
+    
+    .game-buttons a:last-child:hover {
+        background-color: #c0392b;
+    }

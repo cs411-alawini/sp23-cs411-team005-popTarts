@@ -17,7 +17,12 @@ def get_game_info(info):
         'imageLink':info[6],
     }
     return game_info
-
+def get_price_info(info):
+    price_info = {
+        'price':info[0],
+        'discount':info[1]
+    }
+    return price_info
 
 @product_bp.route('/')
 def index():
@@ -27,5 +32,9 @@ def index():
     cur.execute('SELECT * FROM Products WHERE productId = %s', [id])
     info = cur.fetchone()
     game_info = get_game_info(info)
-    return render_template('single_product.html', game_info=game_info)
+    cur.execute('select price,discount from Inventory where productId = %s', [id])
+    info = cur.fetchone()
+    price_info= get_price_info(info)
+    
+    return render_template('single_product.html', game_info=game_info,price_info = price_info)
 
