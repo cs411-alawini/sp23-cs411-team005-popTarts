@@ -33,21 +33,17 @@
             </div>
             <div class="game-info">
                 <div class="game-name">{{ game_info.name }}</div>
-                <div class="game-required age">Minimum required age : {{ game_info.requiredAge }}</div>
-                <!-- ... -->
-                <div class="game-description">Game description : {{ game_info.description }}</div>
-                <!-- ... -->
-                <div class="game-system-requirements">
-                    <h3>System requirements</h3>
-                    <ul>
-                        {% for requirement in game_info.pcRequirements %}
-                        <li><i class="{{ requirement.icon }}"></i>{{ requirement.text }}</li>
-                        {% endfor %}
-                    </ul>
+                <div class="game-price">
+                    <span class="original-price" style="text-decoration: line-through;">${{ price_info.price }}</span>
+                    <span class="discounted-price">${{ (price_info.price * (1 - price_info.discount / 100)) | round(2) }}<br></span>
+                    <span class="discount">{{ price_info.discount }}% off</span>
+
                 </div>
+                <div class="game-requiredAge">Minimum required age : {{ game_info.requiredAge }}</div>
+                <div class="game-description">Game description : {{ game_info.description }}</div>
                 <div class="game-buttons">
-                    <!-- <a href="#">Buy now</a> -->
                     <a href="#">Add to cart</a>
+
                 </div>
             </div>
         </div>
