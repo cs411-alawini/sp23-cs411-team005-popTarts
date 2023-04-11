@@ -12,17 +12,16 @@
     <h1>Products</h1>
     <form action="/products" method="POST">
         <input name="search">
-        <input type="submit">
+        <input type="submit" value = "Search operation: search games">
     </form>
     <form action = "/products/filtered" method="POST">
-        <input type = "submit" value = "show games below average price" /> 
+        <input type = "submit" value = "Stage 3 Query 1: show games below average price" /> 
     </form>
     <form action = '/products/high-rating' method = "POST">
-        <input type = "submit" value = "show highly rated games that are in stock" />
+        <input type = "submit" value = "Stage 3 Query 2: show highly rated games that are in stock" />
     </form>
-    <input type="button" name="next" value="next" />
     <input type="button" name="last" value="last" />
-
+    <input type="button" name="next" value="next" />
     <ul>
         {% for products_chunk in products|batch(2) %}
         <div class="product-row" >
@@ -32,16 +31,11 @@
                 <div class="game-name">{{product.name}}</div>
                 <div class="game-price">{{product.price}}</div>
                 <div class="game-rating">
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star-half-alt"></i>
                     <span>{{product.rating}}</span>
                 </div>
                 <div class="game-buttons">
-                    <a href="/product?id={{product.id}}">View Details</a>
-                    <a href="#">Add to cart</a>
+                    <a href="/product?id={{product.id}}">Read Operation: View Details</a>
+                    <a href="/products?id = {{product.id}}">Create Operation: Add to cart</a>
                 </div>
             </div>
             {% endfor %}

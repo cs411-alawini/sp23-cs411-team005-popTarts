@@ -26,7 +26,15 @@ def get_search_term():
     cur = mysql.connection.cursor()
     cur.execute("SELECT COUNT(*) FROM Products")
     total_products = cur.fetchone()[0]
-    cur.execute("SELECT p.productId, p.name, p.imageLink, i.price, AVG(r.rating) FROM Products p NATURAL JOIN Inventory i NATURAL JOIN Reviews r WHERE name LIKE '%%{}%%' GROUP BY p.productId ORDER BY p.productId LIMIT %s,%s".format(text), (start_index, products_per_page))
+    cur.execute("""SELECT p.productId, p.name, p.imageLink, i.price, AVG(r.rating)
+                FROM Products p LEFT JOIN Inventory i ON p.productId = i.productId 
+                LEFT JOIN Reviews r ON p.productId = r.productId WHERE name LIKE '%%{}%%' 
+                GROUP BY p.productId ORDER BY p.productId LIMIT %s,%s""".format(text), (start_index, products_per_page))
+    #cur.execute("""SELECT p.productId, p.name, p.imageLink, i.price, AVG(r.rating) 
+                # FROM Products p NATURAL JOIN Inventory i NATURAL JOIN Reviews r 
+                # WHERE name LIKE '%%{}%%' GROUP BY p.productId ORDER BY p.productId 
+                # LIMIT %s,%s""".format(text), (start_index, products_per_page))
+
     products = cur.fetchall()
     current_app.logger.info(products)
     products = list(map(translate_game_info,products))
@@ -89,3 +97,18 @@ LIMIT %s,%s""", (start_index, products_per_page))
     products = list(map(translate_game_info,products))
     return render_template('products.html',  products=products, total_products=total_products, 
                            products_per_page=products_per_page, current_page=page)
+    
+#this needs to be fixed to be the create operation 
+# @products_bp.route('/')
+# def index():
+#     id = request.args.get('id')
+#     current_app.logger.info(id)
+#     cur = mysql.connection.cursor()
+#     cur.execute('SELECT * FROM Products WHERE productId = %s', [id])
+#     info = cur.fetchone()
+#     game_info = get_game_info(info)
+#     cur.execute('select price,discount from Inventory where productId = %s', [id])
+#     info = cur.fetchone()
+#     price_info= get_price_info(info)
+    
+#     return render_template('cart.html', game_info=game_info,price_info = price_info)
