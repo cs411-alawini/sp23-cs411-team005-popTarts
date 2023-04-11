@@ -67,3 +67,25 @@ def get_filtered():
     products = list(map(translate_game_info,products))
     return render_template('products.html',  products=products, total_products=total_products, 
                            products_per_page=products_per_page, current_page=page)
+
+@products_bp.route('/products/high-rating', methods=['POST'])
+def get_high_rated(): 
+    page = request.args.get('page', default=1, type=int)
+    products_per_page = request.args.get('products_per_page', default=20, type=int)
+    start_index = (page - 1) * products_per_page
+    end_index = start_index + products_per_page
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT COUNT(*) FROM Products")
+    total_products = cur.fetchone()[0]
+    cur.execute("""SELECT p.productId, p.name, p.imageLink, i.price, AVG(r.rating) AS Average_Rating FROM Products p NATURAL JOIN Inventory i JOIN Reviews r 
+ON (p.productId = r.productId)
+WHERE i.supply > 0
+GROUP BY p.productId
+HAVING AVG(r.rating) > 4
+ORDER BY p.productId
+LIMIT %s,%s""", (start_index, products_per_page))
+    products = cur.fetchall()
+    current_app.logger.info(products)
+    products = list(map(translate_game_info,products))
+    return render_template('products.html',  products=products, total_products=total_products, 
+                           products_per_page=products_per_page, current_page=page)
