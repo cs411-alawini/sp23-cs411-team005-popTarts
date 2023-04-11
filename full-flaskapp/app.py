@@ -4,7 +4,7 @@ from flask import Flask, render_template, redirect, url_for, request
 from db import mysql
 import os
 
-os.environ['FLASK_ENV'] = 'development'
+os.environ['FLASK_DEBUG'] = 'True'
 
 app = Flask(__name__)
 app.config['MYSQL_HOST'] = '34.173.32.130'
