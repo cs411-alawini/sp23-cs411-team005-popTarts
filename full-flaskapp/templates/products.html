@@ -10,18 +10,22 @@
 </style>
 <body>
     <h1>Products</h1>
-    <form action="/products" method="POST">
+    <form action="/products" method="GET">
         <input name="search">
         <input type="submit" value = "Search operation: search games">
     </form>
-    <form action = "/products/filtered" method="POST">
+    <form action = "/products/filtered" method="GET">
         <input type = "submit" value = "Stage 3 Query 1: show games below average price" /> 
     </form>
-    <form action = '/products/high-rating' method = "POST">
+    <form action = '/products/high-rating' method = "GET">
         <input type = "submit" value = "Stage 3 Query 2: show highly rated games that are in stock" />
     </form>
-    <input type="button" name="last" value="last" />
-    <input type="button" name="next" value="next" />
+    {% if current_page > 1 %}
+    <a href="?page={{ current_page - 1 }}&search={{ search }}">Previous</a>
+    {% endif %}
+    {% if products|length >= 20 %}
+    <a href="?page={{ current_page + 1 }}&search={{ search }}">Next</a>
+    {% endif %}
     <ul>
         {% for products_chunk in products|batch(2) %}
         <div class="product-row" >
@@ -29,9 +33,9 @@
             <div class="product">
                 <img src="{{product.imageLink}}">
                 <div class="game-name">{{product.name}}</div>
-                <div class="game-price">{{product.price}}</div>
+                <div class="game-price">${{product.price}}</div>
                 <div class="game-rating">
-                    <span>{{product.rating}}</span>
+                    <span>Rating: {{product.rating}}</span>
                 </div>
                 <div class="game-buttons">
                     <a href="/product?id={{product.id}}">Read Operation: View Details</a>
