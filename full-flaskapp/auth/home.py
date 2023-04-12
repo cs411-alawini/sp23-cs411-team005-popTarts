@@ -6,6 +6,6 @@ home_blueprint = Blueprint('home', __name__)
 @home_blueprint.route('/')
 def home():
     if 'username' in session:
-        return render_template('home.html', username=session['username'])
+        return redirect(url_for('products.get_search_term'))
     else:
         return redirect(url_for('login.login'))

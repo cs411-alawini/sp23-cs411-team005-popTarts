@@ -1,5 +1,5 @@
-from flask import Flask, render_template, request, current_app
-from flask import Blueprint, render_template, send_from_directory, session
+from flask import Flask, render_template, request, current_app, redirect, url_for, session
+from flask import Blueprint, render_template, send_from_directory
 from db import mysql
 
 product_bp = Blueprint('product', __name__, url_prefix='/product')
@@ -26,6 +26,8 @@ def get_price_info(info):
 
 @product_bp.route('/')
 def index():
+    if 'username' not in session:
+        return redirect(url_for('login.login'))
     id = request.args.get('id')
     current_app.logger.info(id)
     cur = mysql.connection.cursor()
