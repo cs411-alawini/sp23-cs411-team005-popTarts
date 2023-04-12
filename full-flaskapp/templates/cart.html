@@ -20,7 +20,7 @@
         </div>
         <div class="game-buttons">
             <a href="/cart/subtract?id={{ request.args.get('id') }}">- </a> 
-            <span margin='20px'> {{item.count}} </span> 
+            <span class = 'cart-count' margin='20px'> {{item.count}} </span> 
             <a href="/cart/add?id={{ request.args.get('id') }}"> + </a>
 
         </div>
