@@ -45,9 +45,9 @@
 
                 <h3> Cart </h3>
                 <div class="game-buttons">
-                    <a href="/product/subtract">- </a> 
+                    <a href="/product/subtract?id={{ request.args.get('id') }}">- </a> 
                     <span margin='20px'> {{count}} </span> 
-                    <a href="/product/add"> + </a>
+                    <a href="/product/add?id={{ request.args.get('id') }}"> + </a>
 
                 </div>
             </div>

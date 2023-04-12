@@ -37,8 +37,13 @@ def index():
     cur.execute('select price,discount from Inventory where productId = %s', [id])
     info = cur.fetchone()
     price_info= get_price_info(info)
-    
-    return render_template('single_product.html', game_info=game_info,price_info = price_info, count = 0) #this count is temporary 
+    cur.execute('select count FROM CartItem c WHERE c.productId = %s AND c.userId = %s', (id, session['user_id']))
+    count = cur.fetchone()
+    if count == None:
+        count = 0
+    else:
+        count = count[0]
+    return render_template('single_product.html', game_info=game_info,price_info = price_info, count = count) #this count is temporary 
 
 @product_bp.route('/add')
 def add_to_cart(): 
@@ -46,16 +51,32 @@ def add_to_cart():
     user_id = session['user_id']
     current_app.logger.info(id)
     cur = mysql.connection.cursor()
-    info = cur.fetchone()
-    game_info = get_game_info(info)
-    cur.execute('select price,discount from Inventory where productId = %s', [id])
-    info = cur.fetchone()
-    price_info= get_price_info(info)
-    #cur.execute('select COUNT(*) FROM CartItem c WHERE c.productId = %s AND c.userId = %s', (id, user_id))
-    #query for count
+    cur.execute('select count FROM CartItem c WHERE c.productId = %s AND c.userId = %s', (id, user_id))
+    # query for count
     #query for either add or update
-    count = 0 
-    return render_template('single_product.html', game_info=game_info,price_info = price_info, count = 0)
+    count = cur.fetchone()
+
+    cur.execute('SELECT MAX(itemNumber) FROM CartItem WHERE userId = %s',(user_id,)); 
+    itemNum = cur.fetchone()
+    if itemNum[0] == None:
+        itemNum = 0
+    else:
+        current_app.logger.info('retrieve itemnum:{}'.format(itemNum))
+        itemNum = int(itemNum[0])
+    if count == None:
+        count = 0
+    else:
+        count = count[0]
+    count+=1
+    if count==1:
+        cur.execute('INSERT INTO CartItem(itemNumber, userId, productId, count) VALUES (%s,%s,%s,%s)',(itemNum+1,user_id,id,count));
+    else:
+         cur.execute('''UPDATE CartItem
+                    SET count = %s 
+                    WHERE userId = %s AND productId = %s;''',
+                    (count,user_id,id));
+    mysql.connection.commit()
+    return redirect('/product/?id={}'.format(id))
     
 @product_bp.route('/subtract')
 def subtract_from_cart():
