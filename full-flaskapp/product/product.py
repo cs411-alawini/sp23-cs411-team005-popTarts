@@ -55,7 +55,10 @@ def add_to_cart():
     # query for count
     #query for either add or update
     count = cur.fetchone()
-
+    if count == None:
+        count = 0
+    else:
+        count = count[0]
     cur.execute('SELECT MAX(itemNumber) FROM CartItem WHERE userId = %s',(user_id,)); 
     itemNum = cur.fetchone()
     if itemNum[0] == None:
@@ -63,10 +66,7 @@ def add_to_cart():
     else:
         current_app.logger.info('retrieve itemnum:{}'.format(itemNum))
         itemNum = int(itemNum[0])
-    if count == None:
-        count = 0
-    else:
-        count = count[0]
+
     count+=1
     if count==1:
         cur.execute('INSERT INTO CartItem(itemNumber, userId, productId, count) VALUES (%s,%s,%s,%s)',(itemNum+1,user_id,id,count));
@@ -84,11 +84,22 @@ def subtract_from_cart():
     user_id = session['user_id']
     current_app.logger.info(id)
     cur = mysql.connection.cursor()
-    info = cur.fetchone()
-    game_info = get_game_info(info)
-    cur.execute('select price,discount from Inventory where productId = %s', [id])
-    info = cur.fetchone()
-    price_info= get_price_info(info)
+    cur.execute('select count FROM CartItem c WHERE c.productId = %s AND c.userId = %s', (id, user_id))
+    count = cur.fetchone()
+    if count == None:
+        return redirect('/product/?id={}'.format(id))
+    else:
+        count = count[0]-1
+    if count==0:
+        cur.execute('''DELETE FROM CartItem
+            WHERE productId = %s AND userID = %s;''',
+            (id,user_id));
+    else:
+        cur.execute('''UPDATE CartItem
+            SET count = %s 
+            WHERE userId = %s AND productId = %s;''',
+            (count,user_id,id));
+    mysql.connection.commit()
     #query for count
     #query for either update or delete 
-    return render_template('single_product.html', game_info=game_info,price_info = price_info, count = 0)
+    return redirect('/product/?id={}'.format(id))
