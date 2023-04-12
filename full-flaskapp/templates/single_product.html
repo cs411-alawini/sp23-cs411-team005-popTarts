@@ -41,8 +41,12 @@
                 </div>
                 <div class="game-requiredAge">Minimum required age : {{ game_info.requiredAge }}</div>
                 <div class="game-description">Game description : {{ game_info.description }}</div>
+
+                <h3> Cart </h3>
                 <div class="game-buttons">
-                    <a href="#">Add to cart</a>
+                    <a href="/product/subtract">- </a> 
+                    <span margin='20px'> {{count}} </span> 
+                    <a href="/product/add"> + </a>
 
                 </div>
             </div>
