@@ -49,7 +49,7 @@
         <div class="product-row" >
             {% for product in products_chunk %}
             <div class="product">
-                <img src="{{product.imageLink}}">
+                <img class = "game-image" src="{{product.imageLink}}">
                 <div class="game-name">{{product.name}}</div>
                 <div class="game-price">
                     <span class="original-price" style="text-decoration: line-through;">${{ product.price }}</span>
