@@ -9,7 +9,8 @@ def cart_info(item):
         'name': item[0],
         'price': item[1],
         'count':item[2],
-        'discount': item[3]
+        'discount': item[3], 
+        'id' : item[4]
     }
     return cart_item
 @cart_bp.route('/')
@@ -21,7 +22,7 @@ def cart():
     
     # Get the user's cart items from the database
     cur = mysql.connection.cursor()
-    cur.execute("SELECT p.name, i.price, c.count, i.discount FROM CartItem c NATURAL JOIN Products p NATURAL JOIN Inventory i WHERE userId = {}".format(user_id))
+    cur.execute("SELECT p.name, i.price, c.count, i.discount, p.productId FROM CartItem c NATURAL JOIN Products p NATURAL JOIN Inventory i WHERE userId = {}".format(user_id))
     cart_items = cur.fetchall()
     cart_items = list(map(cart_info,cart_items))
     return render_template('cart.html', items=cart_items)

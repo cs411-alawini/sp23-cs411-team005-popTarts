@@ -18,12 +18,14 @@
             <span class="discount">{{ item.discount }}% off</span>
 
         </div>
-        <h3> Cart </h3>
         <div class="game-buttons">
-            <a href="/product/subtract?id={{ request.args.get('id') }}">- </a> 
+            <a href="/cart/subtract?id={{ request.args.get('id') }}">- </a> 
             <span margin='20px'> {{item.count}} </span> 
-            <a href="/product/add?id={{ request.args.get('id') }}"> + </a>
+            <a href="/cart/add?id={{ request.args.get('id') }}"> + </a>
 
+        </div>
+        <div class="game-buttons"> 
+            <a href="/cart/delete?id ={{ request.args.get('id') }}"> Delete </a>
         </div>
     </div>
     </div>
