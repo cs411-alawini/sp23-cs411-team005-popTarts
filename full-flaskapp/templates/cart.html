@@ -2,15 +2,32 @@
 <html>
 <head>
 	<title>Cart</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='cart.css') }}">
+
 </head>
 <body>
 	<h1>Your Cart</h1>
 	{% if items %}
-		<ul>
-			{% for item in items %}
-				<li>Name: {{ item.name }} Price: {{ item.price }} Count: {{item.count}}</li>
-			{% endfor %}
-		</ul>
+    {% for item in items %}
+    <div class="game-details">
+    <div class="item">
+        <div class="game-name">{{item.name}}</div>
+        <div class="game-price">
+            <span class="original-price" style="text-decoration: line-through;">${{ item.price }}</span>
+            <span class="discounted-price">${{ (item.price * (1 - item.discount / 100)) | round(2) }}<br></span>
+            <span class="discount">{{ item.discount }}% off</span>
+
+        </div>
+        <h3> Cart </h3>
+        <div class="game-buttons">
+            <a href="/product/subtract?id={{ request.args.get('id') }}">- </a> 
+            <span margin='20px'> {{item.count}} </span> 
+            <a href="/product/add?id={{ request.args.get('id') }}"> + </a>
+
+        </div>
+    </div>
+    </div>
+    {% endfor %}
 	{% else %}
 		<p>Your cart is empty.</p>
 	{% endif %}
