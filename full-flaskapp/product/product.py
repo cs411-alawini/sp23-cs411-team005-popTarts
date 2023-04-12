@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, current_app
-from flask import Blueprint, render_template, send_from_directory
+from flask import Blueprint, render_template, send_from_directory, session
 from db import mysql
 
 product_bp = Blueprint('product', __name__, url_prefix='/product')
@@ -36,5 +36,36 @@ def index():
     info = cur.fetchone()
     price_info= get_price_info(info)
     
-    return render_template('single_product.html', game_info=game_info,price_info = price_info)
+    return render_template('single_product.html', game_info=game_info,price_info = price_info, count = 0) #this count is temporary 
 
+@product_bp.route('/add')
+def add_to_cart(): 
+    id = request.args.get('id')
+    user_id = session['user_id']
+    current_app.logger.info(id)
+    cur = mysql.connection.cursor()
+    info = cur.fetchone()
+    game_info = get_game_info(info)
+    cur.execute('select price,discount from Inventory where productId = %s', [id])
+    info = cur.fetchone()
+    price_info= get_price_info(info)
+    #cur.execute('select COUNT(*) FROM CartItem c WHERE c.productId = %s AND c.userId = %s', (id, user_id))
+    #query for count
+    #query for either add or update
+    count = 0 
+    return render_template('single_product.html', game_info=game_info,price_info = price_info, count = 0)
+    
+@product_bp.route('/subtract')
+def subtract_from_cart():
+    id = request.args.get('id')
+    user_id = session['user_id']
+    current_app.logger.info(id)
+    cur = mysql.connection.cursor()
+    info = cur.fetchone()
+    game_info = get_game_info(info)
+    cur.execute('select price,discount from Inventory where productId = %s', [id])
+    info = cur.fetchone()
+    price_info= get_price_info(info)
+    #query for count
+    #query for either update or delete 
+    return render_template('single_product.html', game_info=game_info,price_info = price_info, count = 0)
