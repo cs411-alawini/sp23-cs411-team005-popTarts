@@ -34,19 +34,19 @@
 
         </div>
         <div class="game-buttons">
-            <a href="/cart/subtract?id={{ request.args.get('id') }}">- </a> 
+            <a href="/cart/subtract?id={{ item.id }}">- </a> 
             <span class = 'cart-count' margin='20px'> {{item.count}} </span> 
-            <a href="/cart/add?id={{ request.args.get('id') }}"> + </a>
+            <a href="/cart/add?id={{ item.id }}"> + </a>
 
         </div>
         <div class="game-buttons"> 
-            <a href="/cart/delete?id ={{ request.args.get('id') }}"> Delete </a>
+            <a href="/cart/delete?id={{ item.id  }}"> Delete </a>
         </div>
     </div>
     </div>
     {% endfor %}
 	{% else %}
-		<p>Your cart is empty.</p>
+		<p style="color:white">Your cart is empty.</p>
 	{% endif %}
 </body>
 </html>
