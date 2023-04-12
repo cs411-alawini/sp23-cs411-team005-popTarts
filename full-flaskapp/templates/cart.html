@@ -6,6 +6,21 @@
 
 </head>
 <body>
+    <div class="header">
+        <div class="logo">Steam</div>
+        <div class="search-box">
+            <input type="text" placeholder="Search games" id="search-input">
+            <button onclick="search()"><i class="fas fa-search"></i></button>
+        </div>
+    </div>
+    <div class="navigation">
+        <a href="/products">Home</a>
+        <a href="/products/filtered">Deals</a>
+        <!-- <a href="#">New releases</a> -->
+        <a href="/products/high-rating">Popular</a>
+        <a href="/cart">Cart</a>
+        <a href="/logout">Logout</a>
+    </div>
 	<h1>Your Cart</h1>
 	{% if items %}
     {% for item in items %}
@@ -35,3 +50,11 @@
 	{% endif %}
 </body>
 </html>
+
+<script>
+    function search() {
+      const query = document.getElementById('search-input').value;
+      const url = `/products?search=${query}`;
+      window.location.href = url;
+    }
+</script>
