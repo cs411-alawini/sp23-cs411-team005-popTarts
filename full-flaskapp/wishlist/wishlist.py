@@ -35,14 +35,14 @@ def add_to_wishlist():
     cur.execute('select * FROM WishList c WHERE c.productId = %s AND c.userId = %s', (id, user_id))
     exists = cur.fetchone()
     if exists == None:
-        cur.execute('SELECT MAX(itemNumber) FROM WishList WHERE userId = %s',(user_id,)); 
+        cur.execute('SELECT MAX(itemNumber) FROM WishList WHERE userId = %s',(user_id,))
         itemNum = cur.fetchone()
         if itemNum[0] == None:
             itemNum = 0
         else:
             current_app.logger.info('retrieve itemnum:{}'.format(itemNum))
             itemNum = int(itemNum[0])
-        cur.execute('INSERT INTO WishList(itemNumber, userId, productId) VALUES (%s,%s,%s)',(itemNum+1,user_id,id));
+        cur.execute('INSERT INTO WishList(itemNumber, userId, productId) VALUES (%s,%s,%s)',(itemNum+1,user_id,id))
         mysql.connection.commit()
     return redirect('/wishlist')
 
@@ -54,7 +54,7 @@ def delete_from_cart():
     cur = mysql.connection.cursor()
     cur.execute('''DELETE FROM WishList
         WHERE productId = %s AND userID = %s;''',
-        (id,user_id));
+        (id,user_id))
     mysql.connection.commit()
     #query for count
     #query for either update or delete 
@@ -74,7 +74,7 @@ def add_to_cart():
         count = 0
     else:
         count = count[0]
-    cur.execute('SELECT MAX(itemNumber) FROM CartItem WHERE userId = %s',(user_id,)); 
+    cur.execute('SELECT MAX(itemNumber) FROM CartItem WHERE userId = %s',(user_id,))
     itemNum = cur.fetchone()
     if itemNum[0] == None:
         itemNum = 0
@@ -84,11 +84,11 @@ def add_to_cart():
 
     count+=1
     if count==1:
-        cur.execute('INSERT INTO CartItem(itemNumber, userId, productId, count) VALUES (%s,%s,%s,%s)',(itemNum+1,user_id,id,count));
+        cur.execute('INSERT INTO CartItem(itemNumber, userId, productId, count) VALUES (%s,%s,%s,%s)',(itemNum+1,user_id,id,count))
     else:
          cur.execute('''UPDATE CartItem
                     SET count = %s 
                     WHERE userId = %s AND productId = %s;''',
-                    (count,user_id,id));
+                    (count,user_id,id))
     mysql.connection.commit()
     return redirect('/wishlist/delete?id={}'.format(id))
