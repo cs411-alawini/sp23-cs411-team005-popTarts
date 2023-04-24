@@ -30,12 +30,27 @@
         <input name="search">
         <input type="submit" value = "Search operation: search games">
     </form> -->
-    <form action = "/products/filtered" method="GET">
+    <!-- <form action = "/products/filtered" method="GET">
         <input type = "submit" value = "Stage 3 Query 1: show games below average price" /> 
     </form>
     <form action = '/products/high-rating' method = "GET">
         <input type = "submit" value = "Stage 3 Query 2: show highly rated games that are in stock" />
-    </form>
+    </form> -->
+    <div class="search-box">
+        <select id = "search_genre">
+            <option value="Action">Action</option>
+            <option value="Free-to-play">Free-to-play</option>
+            <option value="Strategy">Strategy</option>
+            <option value="Adventure">Adventure</option>
+            <option value="Indie">Indie</option>
+            <option value="RPG">RPG</option>
+            <option value="Casual">Casual</option>
+            <option value="Simulation">Simulation</option>
+            <option value="Racing">Racing</option>
+            <option value="MMO">MMO</option>
+          </select>
+        <button onclick="search_genre()"><i class="fas fa-search"></i>Search</button>
+    </div>
     <div class="game-buttons">
         {% if current_page > 1 %}
     <a href="?page={{ current_page - 1 }}&search={{ search }}">Previous</a>
@@ -75,6 +90,11 @@
     function search() {
       const query = document.getElementById('search-input').value;
       const url = `/products?search=${query}`;
+      window.location.href = url;
+    }
+    function search_genre() {
+      const query = document.getElementById('search_genre').value;
+      const url = `/products?search_genre=${query}`;
       window.location.href = url;
     }
 </script>

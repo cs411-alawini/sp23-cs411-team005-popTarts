@@ -22,6 +22,7 @@ def get_search_term():
     if 'username' not in session:
         return redirect(url_for('login.login'))
     # text = request.form['search'].lower().strip()
+    genre = request.args.get('search_genre', default='', type=str)
     text = request.args.get('search', default='', type=str)
     page = request.args.get('page', default=1, type=int)
     current_app.logger.info('search text : '+text)
@@ -31,37 +32,31 @@ def get_search_term():
     cur = mysql.connection.cursor()
     cur.execute("SELECT COUNT(*) FROM Products")
     total_products = cur.fetchone()[0]
-    cur.execute("""SELECT p.productId, p.name, p.imageLink, i.price, AVG(r.rating), i.discount
-                FROM Products p LEFT JOIN Inventory i ON p.productId = i.productId 
-                LEFT JOIN Reviews r ON p.productId = r.productId WHERE name LIKE '%%{}%%' 
-                GROUP BY p.productId ORDER BY p.productId LIMIT %s,%s""".format(text), (start_index, products_per_page))
-    #cur.execute("""SELECT p.productId, p.name, p.imageLink, i.price, AVG(r.rating) 
-                # FROM Products p NATURAL JOIN Inventory i NATURAL JOIN Reviews r 
-                # WHERE name LIKE '%%{}%%' GROUP BY p.productId ORDER BY p.productId 
-                # LIMIT %s,%s""".format(text), (start_index, products_per_page))
+    if text == '': 
+        cur.execute("""SELECT p.productId, p.name, p.imageLink, i.price, AVG(r.rating), i.discount
+                    FROM Products p LEFT JOIN Inventory i ON p.productId = i.productId 
+                    LEFT JOIN Reviews r ON p.productId = r.productId LEFT JOIN GameType g on p.productId = g.productId
+                    WHERE g.genre = %s
+                    GROUP BY p.productId ORDER BY AVG(r.rating) DESC , p.productId LIMIT %s,%s
+                    """, (genre, start_index, products_per_page))
+        products = cur.fetchall()
+        products = list(map(translate_game_info, products))
+        return render_template('products.html',  products=products, total_products=total_products, 
+                           products_per_page=products_per_page, current_page=page,search_genre=text)
+    else: 
+        cur.execute("""SELECT p.productId, p.name, p.imageLink, i.price, AVG(r.rating), i.discount
+                    FROM Products p LEFT JOIN Inventory i ON p.productId = i.productId 
+                    LEFT JOIN Reviews r ON p.productId = r.productId WHERE name LIKE '%%{}%%' 
+                    GROUP BY p.productId ORDER BY p.productId LIMIT %s,%s""".format(text), (start_index, products_per_page))
+        #cur.execute("""SELECT p.productId, p.name, p.imageLink, i.price, AVG(r.rating) 
+                    # FROM Products p NATURAL JOIN Inventory i NATURAL JOIN Reviews r 
+                    # WHERE name LIKE '%%{}%%' GROUP BY p.productId ORDER BY p.productId 
+                    # LIMIT %s,%s""".format(text), (start_index, products_per_page))
 
-    products = cur.fetchall()
-    products = list(map(translate_game_info,products))
-    return render_template('products.html',  products=products, total_products=total_products, 
-                           products_per_page=products_per_page, current_page=page,search=text)
-
-
-# @products_bp.route('/products')
-# def products():
-
-#     page = request.args.get('page', default=1, type=int)
-#     products_per_page = request.args.get('products_per_page', default=20, type=int)
-#     start_index = (page - 1) * products_per_page
-#     end_index = start_index + products_per_page
-#     cur = mysql.connection.cursor()
-#     cur.execute("SELECT COUNT(*) FROM Products")
-#     total_products = cur.fetchone()[0]
-#     cur.execute("SELECT p.productId, p.name, p.imageLink, i.price, AVG(r.rating) FROM Products p NATURAL JOIN Inventory i NATURAL JOIN Reviews r GROUP BY p.productId ORDER BY p.productId LIMIT %s,%s", (start_index, products_per_page))
-#     products = cur.fetchall()
-#     current_app.logger.info(products)
-#     products = list(map(translate_game_info,products))
-#     return render_template('products.html',  products=products, total_products=total_products, 
-#                            products_per_page=products_per_page, current_page=page)
+        products = cur.fetchall()
+        products = list(map(translate_game_info,products))
+        return render_template('products.html',  products=products, total_products=total_products, 
+                            products_per_page=products_per_page, current_page=page,search=text)
 
 @products_bp.route('/products/filtered', methods=['GET'])
 def get_filtered(): 
@@ -105,17 +100,3 @@ LIMIT %s,%s""", (start_index, products_per_page))
     return render_template('products.html',  products=products, total_products=total_products, 
                            products_per_page=products_per_page, current_page=page)
     
-#this needs to be fixed to be the create operation 
-# @products_bp.route('/')
-# def index():
-#     id = request.args.get('id')
-#     current_app.logger.info(id)
-#     cur = mysql.connection.cursor()
-#     cur.execute('SELECT * FROM Products WHERE productId = %s', [id])
-#     info = cur.fetchone()
-#     game_info = get_game_info(info)
-#     cur.execute('select price,discount from Inventory where productId = %s', [id])
-#     info = cur.fetchone()
-#     price_info= get_price_info(info)
-    
-#     return render_template('cart.html', game_info=game_info,price_info = price_info)
