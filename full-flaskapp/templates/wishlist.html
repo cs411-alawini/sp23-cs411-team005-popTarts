@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Cart</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='cart.css') }}">
+	<title>Wish List</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='wishlist.css') }}">
 
 </head>
 <body>
@@ -22,10 +22,10 @@
         <a href="/wishlist">Wish List</a>
         <a href="/logout">Logout</a>
     </div>
-	<h1>Your Cart</h1>
+	<h1>Your Wish List</h1>
 	{% if items %}
     {% for item in items %}
-    <div class="game-details">
+    <div class="Wish-details">
     <div class="item">
         <div class="game-name">{{item.name}}</div>
         <div class="game-price">
@@ -34,25 +34,16 @@
             <span class="discount">{{ item.discount }}% off</span>
 
         </div>
-        <div class="game-buttons">
-            <a href="/cart/subtract?id={{ item.id }}">- </a> 
-            <span class = 'cart-count' margin='20px'> {{item.count}} </span> 
-            <a href="/cart/add?id={{ item.id }}"> + </a>
-
-        </div>
         <div class="game-buttons"> 
-            <a href="/cart/delete?id={{ item.id  }}"> Delete </a>
+            <a href="/wishlist/delete?id={{ item.id  }}"> Remove </a>
+            <a href="/wishlist/cartadd?id={{ item.id }}"> Move to Cart </a>
         </div>
     </div>
     </div>
     {% endfor %}
-    <div class="game-buttons">
-        <a href='/purchase-complete'> Buy All</a>
-    </div>
 	{% else %}
-		<p style="color:white">Your cart is empty.</p>
+		<p style="color:white">Your wish list is empty.</p>
 	{% endif %}
-    
 </body>
 </html>
 

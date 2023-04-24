@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, current_app, redirect, url_fo
 from flask import Blueprint, render_template, send_from_directory
 from db import mysql
 
-purchase_bp = Blueprint('purchase', __name__, url_prefix='/purchase-complete')
+purchase_bp = Blueprint('purchase', __name__, url_prefix='/purchases')
 
 def bill_info(item): 
     bill_item = {
@@ -14,8 +14,8 @@ def bill_info(item):
     }
     return bill_item
 
-@purchase_bp.route('/')
-def cart():
+@purchase_bp.route('/current')
+def current_purchase():
     if 'username' not in session:
         return redirect(url_for('login.login'))
     else: 
