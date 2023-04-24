@@ -209,3 +209,8 @@ body {
     .game-buttons a:last-child:hover {
         background-color: #c0392b;
     }
+
+    .reviews{
+
+        color: white;
+    }

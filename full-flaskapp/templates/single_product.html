@@ -26,7 +26,7 @@
             <a href="/products/high-rating">Popular</a>
             <a href="/cart">Cart</a>
             <a href="/logout">Logout</a>
-    </div>
+        </div>
         <div class="game-details">
             <div class="game-image">
                 <img src="{{game_info.imageLink}}">
@@ -51,6 +51,23 @@
                 </div>
             </div>
         </div>
+        {%for review in reviews%}
+        <div class="game-details">
+            <div>
+            <span class="game-description">Reviewer: {{review.name}}<br></span>
+            <span class="game-description">Rating: {{review.rating}}<br></span>
+            <span class="game-description">Review Text: {{review.reviewText}}<br></span>
+            {%if review.verifiedPurchase == 1%}
+            <span class="game-description">Verified Purchase: Yes<br></span>
+            {%else%}
+            <span class="game-description">Verified Purchase: No<br></span>
+            {%endif%}
+            <span class="game-description" id = "count{{review.uniqueId}}">Upvotes: {{review.upvotes}} <br> </span>
+            </div>
+            
+        </div>
+        <input class = "game-buttons" type="button" id="upvote{{review.uniqueId}}" value="Upvote" onclick="upvote('{{review.uniqueId}}', '{{review.productId}}')"/>
+        {% endfor %}
     </div>
 </body>
 
@@ -60,6 +77,17 @@
     function search() {
       const query = document.getElementById('search-input').value;
       const url = `/products?search=${query}`;
+      window.location.href = url;
+    }
+    function upvote(index, product) {
+      button = document.getElementById("upvote" + index);
+      if (button.value == "Upvote") {
+        button.value = "Remove Upvote";
+      } else {
+        button.value = "Upvote";
+      }
+      const query = parseInt(document.getElementById('count' + index).innerHTML.substring(9)) + 1;
+      const url = `/product?id=${product}&upvote=${query}&uniqueId=${index}`;
       window.location.href = url;
     }
 </script>

@@ -20,10 +20,16 @@ def cart():
         return redirect(url_for('login.login'))
     else: 
         user_id = session['user_id']
+        
+        
+    #will execute transaction and then select 
     
-    # Get the user's cart items from the database
     cur = mysql.connection.cursor()
     cur.execute("SELECT p.name, i.price, c.count, i.discount, p.productId FROM CartItem c NATURAL JOIN Products p NATURAL JOIN Inventory i WHERE userId = {}".format(user_id))
     cart_items = cur.fetchall()
     cart_items = list(map(bill_info,cart_items))
     return render_template('purchased.html', items=cart_items)
+
+
+
+#""" SELECT b.BillId, p.name, b.count, b.cost, p.productId FROM BillItem b NATURAL JOIN Products p WHERE userId = {} ORDER BY b.BillId""".format(user_id))

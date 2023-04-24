@@ -23,6 +23,17 @@ def get_price_info(info):
         'discount':info[1]
     }
     return price_info
+def get_review_info(info): 
+    review_info = {
+        'name': info[0] + info[1],
+        'rating': info[2],
+        'reviewText': info[3],
+        'upvotes': info[4],
+        'verifiedPurchase':info[5],
+        'uniqueId': info[6], 
+        'productId': info[7]
+    }
+    return review_info
 
 @product_bp.route('/')
 def index():
@@ -31,6 +42,16 @@ def index():
     id = request.args.get('id')
     current_app.logger.info(id)
     cur = mysql.connection.cursor()
+    new_upvotes = request.args.get('upvote')
+    uniqueId = request.args.get('uniqueId')
+    if new_upvotes != None and uniqueId != None: 
+        new_upvotes = int(new_upvotes)
+        uniqueId = int(uniqueId)
+        cur.execute("""UPDATE Reviews
+                    SET upvotes = %s
+                    WHERE uniqueId = %s
+                    """, (new_upvotes, uniqueId))
+        mysql.connection.commit()
     cur.execute('SELECT * FROM Products WHERE productId = %s', [id])
     info = cur.fetchone()
     game_info = get_game_info(info)
@@ -43,7 +64,14 @@ def index():
         count = 0
     else:
         count = count[0]
-    return render_template('single_product.html', game_info=game_info,price_info = price_info, count = count) #this count is temporary 
+    cur.execute("""SELECT c.firstName, c.lastName, r.rating, r.reviewText, r.upvotes, r.verifiedPurchase, r.uniqueId, r.productId
+                FROM Reviews r LEFT JOIN Customers c ON r.customerId = c.customerId
+                WHERE r.productId = %s
+                ORDER BY r.upvotes DESC 
+                LIMIT 10""",[id])
+    reviews = cur.fetchall()
+    reviews = list(map(get_review_info,reviews))
+    return render_template('single_product.html', game_info=game_info,price_info = price_info, count = count, reviews = reviews) #this count is temporary 
 
 @product_bp.route('/add')
 def add_to_cart(): 
