@@ -20,6 +20,7 @@ from auth.home import home_blueprint
 from products.products import products_bp
 from product.product import product_bp
 from cart.cart import cart_bp
+from purchase.purchase import purchase_bp
 
 app.register_blueprint(login_blueprint)
 app.register_blueprint(logout_blueprint)
@@ -28,6 +29,7 @@ app.register_blueprint(home_blueprint)
 app.register_blueprint(products_bp)
 app.register_blueprint(product_bp)
 app.register_blueprint(cart_bp)
+app.register_blueprint(purchase_bp)
 
 mysql.init_app(app)
 

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Cart</title>
+	<title>Purchase Complete</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='cart.css') }}">
 
 </head>
@@ -21,37 +21,28 @@
         <a href="/cart">Cart</a>
         <a href="/logout">Logout</a>
     </div>
-	<h1>Your Cart</h1>
+	<h1>Your Purchase</h1>
 	{% if items %}
     {% for item in items %}
     <div class="game-details">
     <div class="item">
         <div class="game-name">{{item.name}}</div>
         <div class="game-price">
-            <span class="original-price" style="text-decoration: line-through;">${{ item.price }}</span>
-            <span class="discounted-price">${{ (item.price * (1 - item.discount / 100)) | round(2) }}<br></span>
-            <span class="discount">{{ item.discount }}% off</span>
-
+            
+            <span class="discounted-price">Price per item: ${{ (item.price * (1 - item.discount / 100)) | round(2) }}<br></span>
+            <span class = 'discounted-price' margin='20px'> Number of items: {{item.count}}<br> </span> 
+            <span class="discounted-price">Total price: ${{ (item.price * (1 - item.discount / 100)) | round(2) * item.count}}<br></span>
         </div>
-        <div class="game-buttons">
-            <a href="/cart/subtract?id={{ item.id }}">- </a> 
-            <span class = 'cart-count' margin='20px'> {{item.count}} </span> 
-            <a href="/cart/add?id={{ item.id }}"> + </a>
+       
+            
 
-        </div>
-        <div class="game-buttons"> 
-            <a href="/cart/delete?id={{ item.id  }}"> Delete </a>
         </div>
     </div>
     </div>
     {% endfor %}
-    <div class="game-buttons">
-        <a href='/purchase-complete'> Buy All</a>
-    </div>
 	{% else %}
-		<p style="color:white">Your cart is empty.</p>
+		<p style="color:white">No items purchased.</p>
 	{% endif %}
-    
 </body>
 </html>
 
