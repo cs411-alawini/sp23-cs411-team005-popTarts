@@ -32,7 +32,7 @@ def get_search_term():
     cur = mysql.connection.cursor()
     cur.execute("SELECT COUNT(*) FROM Products")
     total_products = cur.fetchone()[0]
-    if text == '': 
+    if text == '' and genre != '': 
         cur.execute("""SELECT p.productId, p.name, p.imageLink, i.price, AVG(r.rating), i.discount
                     FROM Products p LEFT JOIN Inventory i ON p.productId = i.productId 
                     LEFT JOIN Reviews r ON p.productId = r.productId LEFT JOIN GameType g on p.productId = g.productId
