@@ -64,6 +64,8 @@ def complete_purchase():
     else:
         billId = int(billId[0])+1
     cur.execute('INSERT INTO Bill(billId,customerId,totalPrice,purchaseTime) VALUES(%s,%s,%s,CURRENT_TIMESTAMP)',(billId,user_id,0))
+    mysql.connection.commit()
+    cur.execute("START TRANSACTION")
     for cart_item in cart_items:
         cur.execute("SELECT supply, price, discount FROM Inventory WHERE productId = {}".format(cart_item['productId']))
         inventory_item = cur.fetchone()
@@ -75,9 +77,10 @@ def complete_purchase():
             cur.execute('''DELETE FROM CartItem
                         WHERE productId = %s AND userID = %s;''',
                         (cart_item['productId'],user_id))
-            cur.execute('INSERT INTO BillItems(billId,count,price,discount,productId) VALUES(%s,%s,%s,%s,%s)',billId,cart_item['count'],inventory_item['price'],inventory_item['discount'],cart_item['productId'])
+            print('billid:',billId)
+            cur.execute('INSERT INTO BillItems(billId,count,price,discount,productId) VALUES(%s,%s,%s,%s,%s)',(billId,cart_item['count'],inventory_item['price'],inventory_item['discount'],cart_item['productId']))
             total_price += inventory_item['price']*cart_item['count']*(100-inventory_item['discount'])/100
-            cur.execute('UPDATE INVENTORY SET supply=%s WHERE productId=%s',inventory_info['supply']-cart_item['count'],cart_item['productId'])
+            cur.execute('UPDATE Inventory SET supply=%s WHERE productId=%s',(inventory_item['supply']-cart_item['count'],cart_item['productId']))
         else:
             missing_items = True
             cur.execute('select * FROM WishList c WHERE c.productId = %s AND c.userId = %s', (cart_item['productId'], user_id))
@@ -92,9 +95,12 @@ def complete_purchase():
                     itemNum = int(itemNum[0])
                 cur.execute('INSERT INTO WishList(itemNumber, userId, productId) VALUES (%s,%s,%s)',(itemNum+1,user_id,cart_item['productId']))
     if inserted == 0:
+        print("ROLLING BACK")
         mysql.connection.rollback()
+        cur.execute('DELETE FROM Bill WHERE billId=%s',(billId,))
+        mysql.connection.commit()
     else:
-        cur.execute('UPDATE Bill SET totalPrice=%s WHERE userId = ORDER BY purchaseTime DESC LIMIT 1',(total_price))
+        cur.execute('UPDATE Bill SET totalPrice=%s WHERE customerId=%s ORDER BY purchaseTime DESC LIMIT 1',(total_price,user_id))
         mysql.connection.commit()
     return render_template('complete_purchase.html', items=cart_items, missing_items = missing_items)
 
