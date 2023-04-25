@@ -69,10 +69,13 @@
                 <img class = "game-image" src="{{product.imageLink}}">
                 <div class="game-name">{{product.name}}</div>
                 <div class="game-price">
+                    {% if product.discount != 0%}
                     <span class="original-price" style="text-decoration: line-through;">${{ product.price }}</span>
                     <span class="discounted-price">${{ (product.price * (1 - product.discount / 100)) | round(2) }}<br></span>
                     <span class="discount">{{ product.discount }}% off</span>
-
+                    {% else %}
+                    <span class="discounted-price"> ${{ product.price }}</span>
+                    {% endif %}
                 </div>
                 <div class="game-rating">
                     <span>Rating: {{product.rating}}</span>

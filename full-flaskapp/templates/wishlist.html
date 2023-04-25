@@ -30,9 +30,13 @@
     <div class="item">
         <div class="game-name">{{item.name}}</div>
         <div class="game-price">
+            {% if item.discount != 0%}
             <span class="original-price" style="text-decoration: line-through;">${{ item.price }}</span>
             <span class="discounted-price">${{ (item.price * (1 - item.discount / 100)) | round(2) }}<br></span>
             <span class="discount">{{ item.discount }}% off</span>
+            {% else %}
+            <span class="discounted-price"> ${{ item.price }}</span>
+            {% endif %}
 
         </div>
         <div class="game-buttons"> 

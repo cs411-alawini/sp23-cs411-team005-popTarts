@@ -36,10 +36,13 @@
             <div class="game-info">
                 <div class="game-name">{{ game_info.name }}</div>
                 <div class="game-price">
+                    {% if price_info.discount != 0%}
                     <span class="original-price" style="text-decoration: line-through;">${{ price_info.price }}</span>
                     <span class="discounted-price">${{ (price_info.price * (1 - price_info.discount / 100)) | round(2) }}<br></span>
                     <span class="discount">{{ price_info.discount }}% off</span>
-
+                    {% else %}
+                    <span class="discounted-price"> ${{ price_info.price }}</span>
+                    {% endif %}
                 </div>
                 <div class="game-requiredAge">Minimum required age : {{ game_info.requiredAge }}</div>
                 <div class="game-description">Game description : {{ game_info.description }}</div>
