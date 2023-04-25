@@ -14,6 +14,7 @@ def bill_info(item):
         'purchaseTime': item[5]
     }
     return bill_item
+
 def purchase_info(item): 
     bill = {
         'billId': item[0],
@@ -22,21 +23,77 @@ def purchase_info(item):
     }
     return bill
 
+def cart_info(item): 
+    cart_item = {
+        'itemNumber': item[0],
+        'productId':item[2],
+        'count': item[3]
+    }
+    return cart_item
+
+def inventory_info(item):
+    intentory_item = {
+        'supply': item[0],
+        'price': item[1],
+        'discount': item[2],
+    }
+
 @purchase_bp.route('/complete-purchase')
 def complete_purchase():
     if 'username' not in session:
         return redirect(url_for('login.login'))
     else: 
         user_id = session['user_id']
-        
-        
+
     #will execute transaction and then select 
-    
+    missing_items = False
     cur = mysql.connection.cursor()
-    cur.execute("SELECT p.name, i.price, c.count, i.discount, p.productId FROM CartItem c NATURAL JOIN Products p NATURAL JOIN Inventory i WHERE userId = {}".format(user_id))
+    cur.execute("SELECT  * \
+                FROM CartItem \
+                WHERE CartItem.userId = %s", (user_id))
     cart_items = cur.fetchall()
-    cart_items = list(map(bill_info,cart_items))
-    return render_template('complete_purchase.html', items=cart_items)
+    cart_items = list(map(cart_info,cart_items))
+    total_price = 0
+    inserted = 0
+    cur.execute("START TRANSACTION")
+    cur.execute('SELECT MAX(billId) FROM Bill'); 
+    billId = cur.fetchone()
+    if billId[0] == None:
+        billId = 0
+    else:
+        billId = int(billId[0])+1
+    cur.execute('INSERT INTO Bill(billId,customerId,totalPrice,purchaseTime) VALUES(%s,%s,%s,CURRENT_TIMESTAMP)',(billId,user_id,0))
+    for cart_item in cart_items:
+        cur.execute("SELECT supply, price, discount FROM Inventory WHERE productId = {}".format(cart_item['productId']))
+        inventory_item = cur.fetchone()
+        inventory_item = inventory_info(inventory_item)
+        if inventory_item['supply']-cart_item['count']>=0:
+            inserted+=1
+            cur.execute('''DELETE FROM CartItem
+                        WHERE productId = %s AND userID = %s;''',
+                        (cart_item['productId'],user_id))
+            cur.execute('INSERT INTO BillItems(billId,count,price,discount,productId) VALUES(%s,%s,%s,%s,%s)',billId,cart_item['count'],inventory_item['price'],inventory_item['discount'],cart_item['productId'])
+            total_price += inventory_item['price']*cart_item['count']*(100-inventory_item['discount'])/100
+            cur.execute('UPDATE INVENTORY SET supply=%s WHERE productId=%s',inventory_info['supply']-cart_item['count'],cart_item['productId'])
+        else:
+            missing_items = True
+            cur.execute('select * FROM WishList c WHERE c.productId = %s AND c.userId = %s', (id, user_id))
+            exists = cur.fetchone()
+            if exists == None:
+                cur.execute('SELECT MAX(itemNumber) FROM WishList WHERE userId = %s',(user_id,))
+                itemNum = cur.fetchone()
+                if itemNum[0] == None:
+                    itemNum = 0
+                else:
+                    current_app.logger.info('retrieve itemnum:{}'.format(itemNum))
+                    itemNum = int(itemNum[0])
+                cur.execute('INSERT INTO WishList(itemNumber, userId, productId) VALUES (%s,%s,%s)',(itemNum+1,user_id,id))
+    if inserted == 0:
+        mysql.connection.rollback()
+    else:
+        cur.execute('UPDATE Bill SET totalPrice=%s WHERE userId = ORDER BY purchaseTime DESC LIMIT 1',(total_price))
+        mysql.connection.commit()
+    return render_template('complete_purchase.html', items=cart_items, missing_items = missing_items)
 
 @purchase_bp.route('/view-purchase')
 def view_purchase():

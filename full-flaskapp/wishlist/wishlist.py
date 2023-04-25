@@ -47,7 +47,7 @@ def add_to_wishlist():
     return redirect('/wishlist')
 
 @wishlist_bp.route('/delete')
-def delete_from_cart():
+def delete_from_wishlist():
     id = request.args.get('id')
     user_id = session['user_id']
     current_app.logger.info(id)
