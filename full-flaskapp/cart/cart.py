@@ -125,7 +125,7 @@ SET supply = supply - prod.count
 WHERE productId = this_product_uid
 // add it to the billitems
 INSERT BillItems
-INSERT INTO BillItems VALUES (billId, 1, is_in_inv.price, is_in_inv.discount, prod.productId)
+INSERT INTO BillItems (billId, count, price, discount, productId) VALUES (billId, prod.count, is_in_inv.price, is_in_inv.discount, prod.productId)
 // also remove it from the cart
 DELETE prod
 FROM CartItem
