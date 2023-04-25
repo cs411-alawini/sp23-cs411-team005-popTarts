@@ -20,11 +20,10 @@
     <div class="navigation">
         <a href="/products">Home</a>
         <a href="/products/filtered">Deals</a>
-        <!-- <a href="#">New releases</a> -->
         <a href="/products/high-rating">Popular</a>
         <a href="/cart">Cart</a>
         <a href="/wishlist">Wish List</a>
-        <a href="/purchase/all-purchases">Purchases</a>
+        <a href="/purchases/all-purchases">Purchases</a>
         <a href="/logout">Logout</a>
     </div>
     <h1 style="color:white;">Products</h1>
@@ -40,6 +39,7 @@
     </form> -->
     <div class="search-box">
         <select id = "search_genre">
+            <option value="">Filter by Genre</option>
             <option value="Action">Action</option>
             <option value="Free-to-play">Free-to-play</option>
             <option value="Strategy">Strategy</option>
@@ -51,7 +51,7 @@
             <option value="Racing">Racing</option>
             <option value="MMO">MMO</option>
           </select>
-        <button onclick="search_genre()"><i class="fas fa-search"></i>Search</button>
+        <button onclick="searchGenre()"><i class="fas fa-search"></i>Search</button>
     </div>
     <div class="game-buttons">
         {% if current_page > 1 %}
@@ -94,7 +94,7 @@
       const url = `/products?search=${query}`;
       window.location.href = url;
     }
-    function search_genre() {
+    function searchGenre() {
       const query = document.getElementById('search_genre').value;
       const url = `/products?search_genre=${query}`;
       window.location.href = url;

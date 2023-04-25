@@ -42,7 +42,7 @@ def get_search_term():
         products = cur.fetchall()
         products = list(map(translate_game_info, products))
         return render_template('products.html',  products=products, total_products=total_products, 
-                           products_per_page=products_per_page, current_page=page,search_genre=text)
+                           products_per_page=products_per_page, current_page=page, search_genre=text)
     else: 
         cur.execute("""SELECT p.productId, p.name, p.imageLink, i.price, AVG(r.rating), i.discount
                     FROM Products p LEFT JOIN Inventory i ON p.productId = i.productId 
