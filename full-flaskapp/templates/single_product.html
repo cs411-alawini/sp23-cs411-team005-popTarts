@@ -86,11 +86,6 @@
     }
     function upvote(index, product) {
       button = document.getElementById("upvote" + index);
-      if (button.value == "Upvote") {
-        button.value = "Remove Upvote";
-      } else {
-        button.value = "Upvote";
-      }
       const query = parseInt(document.getElementById('count' + index).innerHTML.substring(9)) + 1;
       const url = `/product?id=${product}&upvote=${query}&uniqueId=${index}`;
       window.location.href = url;

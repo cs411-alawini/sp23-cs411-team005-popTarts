@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Purchase Complete</title>
+	<title>Purchase Information</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='cart.css') }}">
 
 </head>
@@ -34,6 +34,7 @@
             <span class="discounted-price">Price per item: ${{ (item.price * (1 - item.discount / 100)) | round(2) }}<br></span>
             <span class = 'discounted-price' margin='20px'> Number of items: {{item.count}}<br> </span> 
             <span class="discounted-price">Total price: ${{ (item.price * (1 - item.discount / 100)) | round(2) * item.count}}<br></span>
+            <span class="discounted-price"> Time Purchased: {{item.purchaseTime}} <br> </span>
         </div>
        
             
@@ -42,6 +43,7 @@
     </div>
     </div>
     {% endfor %}
+    <div class="game-name">Total price: ${{item[0].totalPrice}} </div>
 	{% else %}
 		<p style="color:white">No items purchased.</p>
 	{% endif %}

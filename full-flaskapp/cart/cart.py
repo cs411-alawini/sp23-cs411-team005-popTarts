@@ -102,36 +102,36 @@ def delete_from_cart():
     #query for either update or delete 
     return redirect('/cart')
 
-BEGIN TRANSACTION
-// check if the transaction is valid from inventory
+# BEGIN TRANSACTION
+# // check if the transaction is valid from inventory
 
-cart_prods = 
-SELECT  CartItem.productId
-FROM CartItem
-WHERE CartItem.userId = this_user_uid
-// maybe make bill items here?
+# cart_prods = 
+# SELECT  CartItem.productId
+# FROM CartItem
+# WHERE CartItem.userId = this_user_uid
+# // maybe make bill items here?
 
-for prod in cart_prods:
-	BEGIN TRANSACTION
-// check if the transaction is valid from inventory
-is_in_inv = 
-SELECT  Inventory.productId
-FROM Inventory
-WHERE Inventory.productId = this_product_uid AND Inventory.supply >= 1
-if(is_in_inv != null){
-	// if the item is in inventory, then deduct one stock from inventory table
-UPDATE Inventory 
-SET supply = supply - prod.count
-WHERE productId = this_product_uid
-// add it to the billitems
-INSERT BillItems
-INSERT INTO BillItems (billId, count, price, discount, productId) VALUES (billId, prod.count, is_in_inv.price, is_in_inv.discount, prod.productId)
-// also remove it from the cart
-DELETE prod
-FROM CartItem
-SET supply = supply - 1
-WHERE productId = this_product_uid
-} else {
-continue;
-}
-COMMIT TRANSACTION
+# for prod in cart_prods:
+# 	BEGIN TRANSACTION
+# // check if the transaction is valid from inventory
+# is_in_inv = 
+# SELECT  Inventory.productId
+# FROM Inventory
+# WHERE Inventory.productId = this_product_uid AND Inventory.supply >= 1
+# if(is_in_inv != null){
+# 	// if the item is in inventory, then deduct one stock from inventory table
+# UPDATE Inventory 
+# SET supply = supply - prod.count
+# WHERE productId = this_product_uid
+# // add it to the billitems
+# INSERT BillItems
+# INSERT INTO BillItems (billId, count, price, discount, productId) VALUES (billId, prod.count, is_in_inv.price, is_in_inv.discount, prod.productId)
+# // also remove it from the cart
+# DELETE prod
+# FROM CartItem
+# SET supply = supply - 1
+# WHERE productId = this_product_uid
+# } else {
+# continue;
+# }
+# COMMIT TRANSACTION

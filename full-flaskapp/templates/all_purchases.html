@@ -23,20 +23,17 @@
         <a href="/purchase/all-purchases">Purchases</a>
         <a href="/logout">Logout</a>
     </div>
-	<h1>Your Purchase</h1>
-	{% if items %}
-    {% for item in items %}
+	<h1>Your Purchases</h1>
+	{% if bill %}
+    {% for b in len(bill) %}
     <div class="game-details">
     <div class="item">
-        <div class="game-name">{{item.name}}</div>
+        <div class="game-name">{{b}}</div>
         <div class="game-price">
-            
-            <span class="discounted-price">Price per item: ${{ (item.price * (1 - item.discount / 100)) | round(2) }}<br></span>
-            <span class = 'discounted-price' margin='20px'> Number of items: {{item.count}}<br> </span> 
-            <span class="discounted-price">Total price: ${{ (item.price * (1 - item.discount / 100)) | round(2) * item.count}}<br></span>
+            <span class="discounted-price">Total price: ${{ bill[b].totalPrice}}<br></span>
+            <span class="discounted-price">Total price: ${{ bill[b].purchaseTime}}<br></span>
         </div>
-       
-            
+        <input type="button" value="View Purchase Details" onclick = "viewPurchase({{bill[b].billId}})"/>
 
         </div>
     </div>
@@ -52,6 +49,10 @@
     function search() {
       const query = document.getElementById('search-input').value;
       const url = `/products?search=${query}`;
+      window.location.href = url;
+    }
+    function viewPurchase(billId) {
+      const url = '/purchase/view_purchase?bill_id=${index}'
       window.location.href = url;
     }
 </script>
