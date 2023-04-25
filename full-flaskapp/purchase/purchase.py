@@ -37,6 +37,7 @@ def inventory_info(item):
         'price': item[1],
         'discount': item[2],
     }
+    return intentory_item
 
 @purchase_bp.route('/complete-purchase')
 def complete_purchase():
@@ -50,7 +51,7 @@ def complete_purchase():
     cur = mysql.connection.cursor()
     cur.execute("SELECT  * \
                 FROM CartItem \
-                WHERE CartItem.userId = %s", (user_id))
+                WHERE CartItem.userId = %s", (user_id,))
     cart_items = cur.fetchall()
     cart_items = list(map(cart_info,cart_items))
     total_price = 0
@@ -66,7 +67,9 @@ def complete_purchase():
     for cart_item in cart_items:
         cur.execute("SELECT supply, price, discount FROM Inventory WHERE productId = {}".format(cart_item['productId']))
         inventory_item = cur.fetchone()
+        print(inventory_item,cart_item)
         inventory_item = inventory_info(inventory_item)
+        print(inventory_item,cart_item)
         if inventory_item['supply']-cart_item['count']>=0:
             inserted+=1
             cur.execute('''DELETE FROM CartItem
@@ -77,7 +80,7 @@ def complete_purchase():
             cur.execute('UPDATE INVENTORY SET supply=%s WHERE productId=%s',inventory_info['supply']-cart_item['count'],cart_item['productId'])
         else:
             missing_items = True
-            cur.execute('select * FROM WishList c WHERE c.productId = %s AND c.userId = %s', (id, user_id))
+            cur.execute('select * FROM WishList c WHERE c.productId = %s AND c.userId = %s', (cart_item['productId'], user_id))
             exists = cur.fetchone()
             if exists == None:
                 cur.execute('SELECT MAX(itemNumber) FROM WishList WHERE userId = %s',(user_id,))
@@ -87,7 +90,7 @@ def complete_purchase():
                 else:
                     current_app.logger.info('retrieve itemnum:{}'.format(itemNum))
                     itemNum = int(itemNum[0])
-                cur.execute('INSERT INTO WishList(itemNumber, userId, productId) VALUES (%s,%s,%s)',(itemNum+1,user_id,id))
+                cur.execute('INSERT INTO WishList(itemNumber, userId, productId) VALUES (%s,%s,%s)',(itemNum+1,user_id,cart_item['productId']))
     if inserted == 0:
         mysql.connection.rollback()
     else:
