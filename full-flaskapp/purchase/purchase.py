@@ -14,8 +14,8 @@ def bill_info(item):
     }
     return bill_item
 
-@purchase_bp.route('/current')
-def current_purchase():
+@purchase_bp.route('/complete-purchase')
+def complete_purchase():
     if 'username' not in session:
         return redirect(url_for('login.login'))
     else: 
@@ -28,7 +28,39 @@ def current_purchase():
     cur.execute("SELECT p.name, i.price, c.count, i.discount, p.productId FROM CartItem c NATURAL JOIN Products p NATURAL JOIN Inventory i WHERE userId = {}".format(user_id))
     cart_items = cur.fetchall()
     cart_items = list(map(bill_info,cart_items))
-    return render_template('purchased.html', items=cart_items)
+    return render_template('complete_purchase.html', items=cart_items)
+
+@purchase_bp.route('/view-purchase')
+def complete_purchase():
+    if 'username' not in session:
+        return redirect(url_for('login.login'))
+    else: 
+        user_id = session['user_id']
+        
+        
+    #will execute transaction and then select 
+    
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT p.name, i.price, c.count, i.discount, p.productId FROM CartItem c NATURAL JOIN Products p NATURAL JOIN Inventory i WHERE userId = {}".format(user_id))
+    cart_items = cur.fetchall()
+    cart_items = list(map(bill_info,cart_items))
+    return render_template('view_purchase.html', items=cart_items)
+
+@purchase_bp.route('/all-purchases')
+def all_purchases():
+    if 'username' not in session:
+        return redirect(url_for('login.login'))
+    else: 
+        user_id = session['user_id']
+        
+        
+    #will execute transaction and then select 
+    
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT p.name, i.price, c.count, i.discount, p.productId FROM CartItem c NATURAL JOIN Products p NATURAL JOIN Inventory i WHERE userId = {}".format(user_id))
+    cart_items = cur.fetchall()
+    cart_items = list(map(bill_info,cart_items))
+    return render_template('all_purchases.html', items=cart_items)
 
 
 

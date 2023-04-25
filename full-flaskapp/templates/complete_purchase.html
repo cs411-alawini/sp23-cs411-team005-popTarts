@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Wish List</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='wishlist.css') }}">
+	<title>Purchase Complete</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='cart.css') }}">
 
 </head>
 <body>
@@ -23,27 +23,27 @@
         <a href="/purchase/all-purchases">Purchases</a>
         <a href="/logout">Logout</a>
     </div>
-	<h1>Your Wish List</h1>
+	<h1>Your Purchase</h1>
 	{% if items %}
     {% for item in items %}
-    <div class="Wish-details">
+    <div class="game-details">
     <div class="item">
         <div class="game-name">{{item.name}}</div>
         <div class="game-price">
-            <span class="original-price" style="text-decoration: line-through;">${{ item.price }}</span>
-            <span class="discounted-price">${{ (item.price * (1 - item.discount / 100)) | round(2) }}<br></span>
-            <span class="discount">{{ item.discount }}% off</span>
-
+            
+            <span class="discounted-price">Price per item: ${{ (item.price * (1 - item.discount / 100)) | round(2) }}<br></span>
+            <span class = 'discounted-price' margin='20px'> Number of items: {{item.count}}<br> </span> 
+            <span class="discounted-price">Total price: ${{ (item.price * (1 - item.discount / 100)) | round(2) * item.count}}<br></span>
         </div>
-        <div class="game-buttons"> 
-            <a href="/wishlist/delete?id={{ item.id  }}"> Remove </a>
-            <a href="/wishlist/cartadd?id={{ item.id }}"> Move to Cart </a>
+       
+            
+
         </div>
     </div>
     </div>
     {% endfor %}
 	{% else %}
-		<p style="color:white">Your wish list is empty.</p>
+		<p style="color:white">No items purchased.</p>
 	{% endif %}
 </body>
 </html>
@@ -55,3 +55,7 @@
       window.location.href = url;
     }
 </script>
+
+
+
+
