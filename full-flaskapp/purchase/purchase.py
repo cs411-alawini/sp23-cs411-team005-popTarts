@@ -11,7 +11,9 @@ def bill_info(item):
         'count':item[2],
         'discount': item[3], 
         'id' : item[4],
-        'purchaseTime': item[5]
+        'purchaseTime': item[5],
+        'totalPrice': item[6],
+        
     }
     return bill_item
 
@@ -102,7 +104,8 @@ def complete_purchase():
     else:
         cur.execute('UPDATE Bill SET totalPrice=%s WHERE customerId=%s ORDER BY purchaseTime DESC LIMIT 1',(total_price,user_id))
         mysql.connection.commit()
-    return render_template('complete_purchase.html', items=cart_items, missing_items = missing_items)
+    
+    return redirect("/purchases/view-purchase?bill_id={}".format(billId))
 
 @purchase_bp.route('/view-purchase')
 def view_purchase():
@@ -118,8 +121,8 @@ def view_purchase():
     
     cur = mysql.connection.cursor()
     cur.execute("""SELECT p.name, b.price, b.count, b.discount, p.productId, bi.purchaseTime, bi.totalPrice
-                FROM BillItem b NATURAL JOIN Products p NATURAL JOIN Bill bi
-                WHERE userId = {} AND b.billId = %s""".format(user_id), (bill_id))
+                FROM BillItems b NATURAL JOIN Products p NATURAL JOIN Bill bi
+                WHERE customerId = {} AND b.billId = %s""".format(user_id), (bill_id))
     bill_items = cur.fetchall()
     bill_items = list(map(bill_info,bill_items))
     return render_template('view_purchase.html', items=bill_items)
@@ -138,7 +141,7 @@ def all_purchases():
     cur.execute("""SELECT b.billId, b.totalPrice, b.purchaseTime FROM Bill b
                 WHERE customerId = {} ORDER BY b.purchaseTime DESC""".format(user_id))
     bill = cur.fetchall()
-    bill = list(map(bill_info,bill))
+    bill = list(map(purchase_info,bill))
     return render_template('all_purchases.html', bill = bill)
 
 

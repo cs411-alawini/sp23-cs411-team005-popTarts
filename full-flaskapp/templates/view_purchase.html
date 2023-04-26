@@ -43,7 +43,7 @@
     </div>
     </div>
     {% endfor %}
-    <div class="game-name">Total price: ${{item[0].totalPrice}} </div>
+    <div class="game-name">Total price: ${{items[0].totalPrice | round(2)}} </div>
 	{% else %}
 		<p style="color:white">No items purchased.</p>
 	{% endif %}

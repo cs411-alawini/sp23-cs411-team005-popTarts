@@ -24,15 +24,15 @@
     </div>
 	<h1>Your Purchases</h1>
 	{% if bill %}
-    {% for b in len(bill) %}
+    {% for b in bill %}
     <div class="game-details">
     <div class="item">
-        <div class="game-name">{{b}}</div>
+        <div class="game-name"></div>
         <div class="game-price">
-            <span class="discounted-price">Total price: ${{ bill[b].totalPrice}}<br></span>
-            <span class="discounted-price">Total price: ${{ bill[b].purchaseTime}}<br></span>
+            <span class="discounted-price">Total price: ${{ b.totalPrice | round(2)}}<br></span>
+            <span class="discounted-price"> Time purchased: {{ b.purchaseTime}}<br></span>
         </div>
-        <input type="button" value="View Purchase Details" onclick = "viewPurchase({{bill[b].billId}})"/>
+        <input type="button" value="View Purchase Details" onclick = "viewPurchase({{b.billId}})"/>
 
         </div>
     </div>
@@ -51,7 +51,7 @@
       window.location.href = url;
     }
     function viewPurchase(billId) {
-      const url = '/purchases/view_purchase?bill_id=${index}'
+      const url =  `/purchases/view-purchase?bill_id=${billId}`;
       window.location.href = url;
     }
 </script>
