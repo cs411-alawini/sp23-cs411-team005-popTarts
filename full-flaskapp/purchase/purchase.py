@@ -47,7 +47,7 @@ def complete_purchase():
         return redirect(url_for('login.login'))
     else: 
         user_id = session['user_id']
-
+    billId = -1 
     #will execute transaction and then select 
     missing_items = False
     cur = mysql.connection.cursor()
@@ -96,6 +96,9 @@ def complete_purchase():
                     current_app.logger.info('retrieve itemnum:{}'.format(itemNum))
                     itemNum = int(itemNum[0])
                 cur.execute('INSERT INTO WishList(itemNumber, userId, productId) VALUES (%s,%s,%s)',(itemNum+1,user_id,cart_item['productId']))
+            cur.execute('''DELETE FROM CartItem
+                        WHERE productId = %s AND userID = %s;''',
+                        (cart_item['productId'],user_id))
     if inserted == 0:
         print("ROLLING BACK")
         mysql.connection.rollback()
