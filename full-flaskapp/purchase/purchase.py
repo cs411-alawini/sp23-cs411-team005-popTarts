@@ -122,7 +122,7 @@ def view_purchase():
     cur = mysql.connection.cursor()
     cur.execute("""SELECT p.name, b.price, b.count, b.discount, p.productId, bi.purchaseTime, bi.totalPrice
                 FROM BillItems b NATURAL JOIN Products p NATURAL JOIN Bill bi
-                WHERE customerId = {} AND b.billId = %s""".format(user_id), (bill_id))
+                WHERE customerId = {} AND b.billId = {}""".format(user_id,bill_id))
     bill_items = cur.fetchall()
     bill_items = list(map(bill_info,bill_items))
     return render_template('view_purchase.html', items=bill_items)
